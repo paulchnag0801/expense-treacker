@@ -1,1 +1,63 @@
-<h2>Hello world! 這是 index</h2>
+<div class="container mt-5">
+  {{!-- sort --}}
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-8">
+      <form action="/sort">
+        <select class="form-select" id="sort" name="sort" onchange="this.form.submit()"
+          aria-label="Default select example">
+          <option selected>請選擇排序方式</option>
+          <option value="name">A -> Z</option>
+          <option value="name-reverse">Z -> A</option>
+          <option value="time">依建立時間順序(早 -> 晚)</option>
+        </select>
+      </form>
+    </div>
+  </div>
+  {{!-- main --}}
+  <main class="mt-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8">
+        <h2>總金額:{{ totalAmount }}</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-2">
+      <div class="col-12 col-md-10 col-lg-8">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">項目</th>
+              <th scope="col">金額</th>
+              <th scope="col">修改</th>
+              <th scope="col">刪除</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each records}}
+            <tr>
+              <th scope="row">
+                <div class="row">
+                  <div class="col-3">
+                    <i class="fas fa-{{ this.category }} fa-3x"></i>
+                  </div>
+                  <div class="col-9">
+                    <div class="detail">
+                      <h2 class="fs-5">{{this.name}}</h2>
+                      <h3 class="fs-6">{{this.date}}</h3>
+                    </div>
+                  </div>
+                </div>
+              </th>
+              <td>{{this.amount}}</td>
+              <td><button class="btn btn-success">修改</button></td>
+              <td><button class="btn btn-danger">刪除</button></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mx-auto" style="width: 200px;">
+      <button class="btn btn-primary">新增支出</button>
+    </div>
+  </main>
+</div>
