@@ -34,7 +34,11 @@ app.use(express.urlencoded({ extended: true }))
 // setting static files
 app.use(express.static('public'))
 
+//宣告篩選category
+let filteredCategory = ''
+
 app.get('/', (req, res) => {
+  filteredCategory = ''
   let totalAmount = 0
   Record.find() // 取出 Restaurant model 裡的所有資料
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
@@ -42,6 +46,7 @@ app.get('/', (req, res) => {
     .then((records) => {
       for (let i = 0; i < records.length; i++) {
         totalAmount += Number(records[i].amount)
+        // 將 category 字串轉為 icon 名稱
         switch (records[i].category) {
           case 'meals':
             records[i].category = 'utensils'
@@ -60,7 +65,7 @@ app.get('/', (req, res) => {
             break
         }
       }
-      res.render('index', { records, totalAmount })
+      res.render('index', { records, totalAmount, filteredCategory })
     }) // 將資料傳給 index 樣板
     .catch((error) => console.error(error)) // 錯誤處理
 })
@@ -134,9 +139,43 @@ app.post('/records/:id/edit', (req, res) => {
 app.post('/records/:id/delete', (req, res) => {
   const id = req.params.id
   Record.findById(id)
-    .then(record => record.remove())
+    .then((record) => record.remove())
     .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error))
+})
+
+// 分類
+app.get('/filter', (req, res) => {
+  let totalAmount = 0
+  filteredCategory = req.query.filter
+  Record.find({ category: filteredCategory })
+    .lean()
+    .sort({ name: 'asc' })
+    .then((records) => {
+      for (let i = 0; i < records.length; i++) {
+        totalAmount += Number(records[i].amount)
+        // 將 category 字串轉為 icon 名稱
+        switch (records[i].category) {
+          case 'meals':
+            records[i].category = 'utensils'
+            break
+          case 'traffics':
+            records[i].category = 'shuttle-van'
+            break
+          case 'entertainments':
+            records[i].category = 'grin-beam'
+            break
+          case 'living':
+            records[i].category = 'home'
+            break
+          case 'others':
+            records[i].category = 'pen'
+            break
+        }
+      }
+      res.render('index', { records, totalAmount, filteredCategory })
+    }) // 將資料傳給 index 樣板
+    .catch(error => console.error(error)) // 錯誤處理
 })
 
 app.listen(3000, () => {

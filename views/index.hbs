@@ -2,13 +2,15 @@
   {{!-- sort --}}
   <div class="row justify-content-center">
     <div class="col-12 col-md-6 col-lg-6">
-      <form action="/sort">
-        <select class="form-select" id="sort" name="sort" onchange="this.form.submit()"
+      <form action="/filter" method="get">
+        <select class="form-select" id="filter" name="filter" onchange="this.form.submit()"
           aria-label="Default select example">
-          <option selected>請選擇排序方式</option>
-          <option value="name">A -> Z</option>
-          <option value="name-reverse">Z -> A</option>
-          <option value="time">依建立時間順序(早 -> 晚)</option>
+          <option value="" disabled {{#if (eq filteredCategory '' )}} selected {{/if}}>請選擇分類</option>
+          <option value="meals" {{#if (eq filteredCategory 'meals' )}} selected {{/if}}>餐飲食品</option>
+          <option value="traffics" {{#if (eq filteredCategory 'traffics' )}} selected {{/if}}>交通出行</option>
+          <option value="living" {{#if (eq filteredCategory 'living' )}} selected {{/if}}>家居物業</option>
+          <option value="entertainments" {{#if (eq filteredCategory 'entertainments' )}} selected {{/if}}>休閒娛樂</option>
+          <option value="others" {{#if (eq filteredCategory 'others' )}} selected {{/if}}>其他</option>
         </select>
       </form>
     </div>
