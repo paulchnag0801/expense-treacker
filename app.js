@@ -22,6 +22,9 @@ db.once('open', () => {
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
+app.use(express.urlencoded({ extended: true }))
+// setting static files
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
   let totalAmount = 0
@@ -52,6 +55,16 @@ app.get('/', (req, res) => {
       res.render('index', { records, totalAmount })
     }) // 將資料傳給 index 樣板
     .catch((error) => console.error(error)) // 錯誤處理
+})
+//create new
+app.get('/records/new', (req, res) => {
+  return res.render('new')
+})
+app.post('/records', (req, res) => {
+  const { name, amount, category, date } = req.body
+  return Record.create({ name, amount, category, date })
+    .then(() => res.redirect('/'))
+    .catch((error) => console.log(error))
 })
 
 app.listen(3000, () => {

@@ -1,7 +1,7 @@
 <div class="container mt-5">
   {{!-- sort --}}
   <div class="row justify-content-center">
-    <div class="col-12 col-md-6 col-lg-8">
+    <div class="col-12 col-md-6 col-lg-6">
       <form action="/sort">
         <select class="form-select" id="sort" name="sort" onchange="this.form.submit()"
           aria-label="Default select example">
@@ -16,12 +16,13 @@
   {{!-- main --}}
   <main class="mt-5">
     <div class="row justify-content-center">
-      <div class="col-12 col-md-10 col-lg-8">
-        <h2>總金額:{{ totalAmount }}</h2>
+      <div class="total-amount d-flex justify-content-between">
+        <h2>總金額:</h2>
+        <span class="fs-1">{{ totalAmount }} 元</span>
       </div>
     </div>
     <div class="row justify-content-center mt-2">
-      <div class="col-12 col-md-10 col-lg-8">
+      <div class="col-12 col-md-10 col-lg-6">
         <table class="table">
           <thead>
             <tr>
@@ -37,17 +38,18 @@
               <th scope="row">
                 <div class="row">
                   <div class="col-3">
-                    <i class="fas fa-{{ this.category }} fa-3x"></i>
-                  </div>
-                  <div class="col-9">
-                    <div class="detail">
-                      <h2 class="fs-5">{{this.name}}</h2>
-                      <h3 class="fs-6">{{this.date}}</h3>
+                    <span>
+                      <i class="fas fa-{{ this.category }} fa-2x"></i>
+                    </span>
+                    <div class="col-9">
+                      <div class="detail">
+                        <h2 class="fs-5">{{ this.name }}</h2>
+                        <h3 class="fs-6">{{ this.date }}</h3>
+                      </div>
                     </div>
                   </div>
-                </div>
               </th>
-              <td>{{this.amount}}</td>
+              <td>{{ this.amount }}</td>
               <td><button class="btn btn-success">修改</button></td>
               <td><button class="btn btn-danger">刪除</button></td>
             </tr>
@@ -56,8 +58,8 @@
         </table>
       </div>
     </div>
-    <div class="mx-auto" style="width: 200px;">
-      <button class="btn btn-primary">新增支出</button>
+    <div class="mx-auto mt-3" style="width: 200px;">
+      <a href="/records/new" class="btn btn-primary">新增支出</a>
     </div>
   </main>
 </div>
