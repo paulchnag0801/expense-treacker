@@ -3,6 +3,7 @@ const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars')
 const app = express()
 const Record = require('./models/record')
+const methodOverride = require('method-override')
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: '.hbs',
@@ -33,6 +34,7 @@ app.set('view engine', 'hbs')
 app.use(express.urlencoded({ extended: true }))
 // setting static files
 app.use(express.static('public'))
+app.use(methodOverride('_method'))
 
 //宣告篩選category
 let filteredCategory = ''
@@ -121,7 +123,7 @@ app.get('/records/:id/edit', (req, res) => {
 
 //在修改頁面edit，編輯支出。
 // 修改單筆支出
-app.post('/records/:id/edit', (req, res) => {
+app.put('/records/:id', (req, res) => {
   const id = req.params.id
   const { name, amount, category, date } = req.body
   return Record.findById(id)
@@ -136,7 +138,7 @@ app.post('/records/:id/edit', (req, res) => {
     .catch((error) => console.log(error))
 })
 // 刪除單筆支出
-app.post('/records/:id/delete', (req, res) => {
+app.delete('/records/:id', (req, res) => {
   const id = req.params.id
   Record.findById(id)
     .then((record) => record.remove())

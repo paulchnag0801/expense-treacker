@@ -15,7 +15,6 @@
               maxlength="25" value="{{ record.name }}" disabled>
           </div>
         </div>
-
         <div class="mb-3 row">
           <label for="datepicker" class="col-sm-2 col-form-label">日期</label>
           <div class="col-sm-10">
@@ -23,7 +22,6 @@
               pattern="[0-9]{4}/[0-9]{2}/[0-9]{2}" title="請輸入西元年/月/日 ex: 2021/05/20" value="{{ record.date }}" disabled>
           </div>
         </div>
-
         <div class="mb-3 row">
           <label for="category" class="col-sm-2 col-form-label">類別</label>
           <div class="col-sm-10">
@@ -42,7 +40,10 @@
       </form>
       <div class="d-flex justify-content-end">
         <a href="/" class="btn btn-secondary me-2">返回</a>
-        <a href="/records/{{ record._id }}/edit" class="btn btn-primary">更改</a>
+        <a href="/records/{{ record._id }}/edit" class="btn btn-primary me-2">更改</a>
+        <form action="/records/{{ record._id }}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger">刪除</button>
+        </form>
       </div>
     </div>
   </div>
