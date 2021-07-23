@@ -1,0 +1,32 @@
+[
+  {
+    "name": "午餐",
+    "category": "meals",
+    "date": "2021-07-23",
+    "amount": 160
+  },
+  {
+    "name": "捷運費用",
+    "category": "traffics",
+    "date": "2021-07-23",
+    "amount": 100
+  },
+  {
+    "name": "看電影",
+    "category": "entertainments",
+    "date": "2021-07-23",
+    "amount": 200
+  },
+  {
+    "name": "租金",
+    "category": "living",
+    "date": "2021-07-23",
+    "amount": 15000
+  },
+  {
+    "name": "買禮物",
+    "category": "others",
+    "date": "2021-07-23",
+    "amount": 1000
+  }
+]
