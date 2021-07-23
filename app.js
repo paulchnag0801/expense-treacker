@@ -1,10 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
+const exphbs = require('express-handlebars')
 const app = express()
 
-
-
-mongoose.connect('mongodb://localhost/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB
+mongoose.connect('mongodb://localhost/expense-tracker', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}) // 設定連線到 mongoDB
 
 // 取得資料庫連線狀態
 const db = mongoose.connection
@@ -17,10 +19,11 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
 
 app.get('/', (req, res) => {
-  res.send('hello world')
+  res.render('index')
 })
 
 app.listen(3000, () => {
