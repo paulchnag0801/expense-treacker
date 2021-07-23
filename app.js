@@ -3,7 +3,15 @@ const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars')
 const app = express()
 const Record = require('./models/record')
-
+const hbs = exphbs.create({
+  defaultLayout: 'main',
+  extname: '.hbs',
+  helpers: {
+    eq: function (a, b) {
+      return a === b
+    },
+  },
+})
 mongoose.connect('mongodb://localhost/expense-tracker', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -20,7 +28,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
 app.use(express.urlencoded({ extended: true }))
 // setting static files
@@ -56,7 +64,7 @@ app.get('/', (req, res) => {
     }) // 將資料傳給 index 樣板
     .catch((error) => console.error(error)) // 錯誤處理
 })
-//create new
+//create new record
 app.get('/records/new', (req, res) => {
   return res.render('new')
 })
@@ -65,6 +73,62 @@ app.post('/records', (req, res) => {
   return Record.create({ name, amount, category, date })
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
+})
+
+//read record detail
+app.get('/records/:id', (req, res) => {
+  const id = req.params.id
+  return Record.findById(id)
+    .lean()
+    .then((record) => {
+      switch (record.category) {
+        case 'meals':
+          record.category = '餐飲食品'
+          break
+        case 'traffics':
+          record.category = '交通出行'
+          break
+        case 'entertainments':
+          record.category = '休閒娛樂'
+          break
+        case 'living':
+          record.category = '家居物業'
+          break
+        case 'others':
+          record.category = '其他'
+          break
+      }
+      res.render('detail', { record })
+    })
+    .catch((error) => console.log(error))
+})
+
+//從主頁修改單筆支出
+app.get('/records/:id/edit', (req, res) => {
+  const id = req.params.id
+  const { name, amount, category, date } = req.body
+  Record.findById(id)
+    .lean()
+    .then((record) => {
+      res.render('edit', { record })
+    })
+})
+
+//在修改頁面edit，編輯支出。
+// 修改單筆支出
+app.post('/records/:id/edit', (req, res) => {
+  const id = req.params.id
+  const { name, amount, category, date }= req.body
+  return Record.findById(id)
+    .then(record => {
+      record.name = name
+      record.amount = amount
+      record.category = category
+      record.date = date
+      return record.save()
+    })
+    .then(()=> res.redirect(`/records/${id}`))
+    .catch(error => console.log(error))
 })
 
 app.listen(3000, () => {

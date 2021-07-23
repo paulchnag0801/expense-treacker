@@ -42,15 +42,17 @@
                       <i class="fas fa-{{ this.category }} fa-2x"></i>
                     </span>
                     <div class="col-9">
-                      <div class="detail">
-                        <h2 class="fs-5">{{ this.name }}</h2>
-                        <h3 class="fs-6">{{ this.date }}</h3>
-                      </div>
+                      <a href="/records/{{ this._id }}" class="text-decoration-none text-body">
+                        <div class="detail">
+                          <h2 class="fs-5">{{ this.name }}</h2>
+                          <h3 class="fs-6">{{ this.date }}</h3>
+                        </div>
+                      </a>
                     </div>
                   </div>
               </th>
               <td>{{ this.amount }}</td>
-              <td><button class="btn btn-success">修改</button></td>
+              <td><a href="/records/{{ this._id }}/edit" class="btn btn-success">修改</a></td>
               <td><button class="btn btn-danger">刪除</button></td>
             </tr>
             {{/each}}
