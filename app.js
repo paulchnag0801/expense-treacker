@@ -118,16 +118,24 @@ app.get('/records/:id/edit', (req, res) => {
 // 修改單筆支出
 app.post('/records/:id/edit', (req, res) => {
   const id = req.params.id
-  const { name, amount, category, date }= req.body
+  const { name, amount, category, date } = req.body
   return Record.findById(id)
-    .then(record => {
+    .then((record) => {
       record.name = name
       record.amount = amount
       record.category = category
       record.date = date
       return record.save()
     })
-    .then(()=> res.redirect(`/records/${id}`))
+    .then(() => res.redirect(`/records/${id}`))
+    .catch((error) => console.log(error))
+})
+// 刪除單筆支出
+app.post('/records/:id/delete', (req, res) => {
+  const id = req.params.id
+  Record.findById(id)
+    .then(record => record.remove())
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 

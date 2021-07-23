@@ -52,8 +52,12 @@
                   </div>
               </th>
               <td>{{ this.amount }}</td>
-              <td><a href="/records/{{ this._id }}/edit" class="btn btn-success">修改</a></td>
-              <td><button class="btn btn-danger">刪除</button></td>
+              <td><a href="/records/{{ this._id }}/edit" class="btn btn-success">編輯</a></td>
+              <td>
+                <form action="/records/{{ this._id }}/delete" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-danger">刪除</button>
+                </form>
+              </td>
             </tr>
             {{/each}}
           </tbody>
