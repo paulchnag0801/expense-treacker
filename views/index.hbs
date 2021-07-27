@@ -3,26 +3,30 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-6 col-lg-6">
       <form action="/filter" method="get">
-        <select class="form-select" id="filter" name="filter" onchange="this.form.submit()"
-          aria-label="Default select example">
-          <option value="" disabled {{#if (eq filteredCategory '' )}} selected {{/if}}>請選擇分類</option>
-          <option value="meals" {{#if (eq filteredCategory 'meals' )}} selected {{/if}}>餐飲食品</option>
-          <option value="traffics" {{#if (eq filteredCategory 'traffics' )}} selected {{/if}}>交通出行</option>
-          <option value="living" {{#if (eq filteredCategory 'living' )}} selected {{/if}}>家居物業</option>
-          <option value="entertainments" {{#if (eq filteredCategory 'entertainments' )}} selected {{/if}}>休閒娛樂</option>
-          <option value="others" {{#if (eq filteredCategory 'others' )}} selected {{/if}}>其他</option>
+        <select class="form-control" name="categorySelector" id="categorySelector" onchange="submit()">
+          <option selected disabled value="">查看類別開銷</option>
+          {{#each categoryList}}
+          <option value="{{this.name}}" {{#ifEqual this.name ../categorySelector}}selected{{/ifEqual}}>{{this.name}}
+          </option>
+          {{/each}}
         </select>
       </form>
     </div>
   </div>
+
   {{!-- main --}}
+  {{!-- total amount --}}
   <main class="mt-5">
     <div class="row justify-content-center">
       <div class="total-amount d-flex justify-content-between">
-        <h2>總金額:</h2>
-        <span class="fs-1">{{ totalAmount }} 元</span>
+        <h3>總金額:</h3>
+        <span class="fs-1">
+          <h3>{{ totalAmount }} 元</h3>
+        </span>
       </div>
     </div>
+
+    {{!-- record table --}}
     <div class="row justify-content-center mt-2">
       <div class="col-12 col-md-10 col-lg-6">
         <table class="table">
@@ -39,23 +43,26 @@
             <tr>
               <th scope="row">
                 <div class="row">
-                  <div class="col-3">
-                    <span>
-                      <i class="fas fa-{{ this.category }} fa-2x"></i>
-                    </span>
-                    <div class="col-9">
-                      <a href="/records/{{ this._id }}" class="text-decoration-none text-body">
-                        <div class="detail">
-                          <h2 class="fs-5">{{ this.name }}</h2>
-                          <h3 class="fs-6">{{ this.date }}</h3>
-                        </div>
-                      </a>
-                    </div>
+                  <div class="col-12">
+                    <a href="/records/{{ this._id }}" class="text-decoration-none text-body">
+                      <div class="detail  d-flex justify-content-start flex-wrap   ">
+                        <h3 class="text-wrap  w-100 " style="font-size: 20px">
+                          {{#each ../categoryList}}
+                          {{#ifEqual this.name ../this.category}} {{{this.icon}}} {{/ifEqual}}
+                          {{/each}}
+                          <h3 class="recordName text-wrap  w-100 " style="font-size: 20px">{{this.name}}</h3>
+                        </h3>
+                        <h3 class="text-wrap" style="font-size: 20px">{{ this.date }}</h3>
+                      </div>
+                    </a>
                   </div>
               </th>
-              <td>{{ this.amount }}</td>
-              <td><a href="/records/{{ this._id }}/edit" class="btn btn-success">編輯</a></td>
-              <td>
+
+              <td class="align-middle ">
+                <h3 class="text-wrap w-100  " style="font-size: 20px ">{{ this.amount }}</h3>
+              </td>
+              <td class="align-middle "><a href="/records/{{ this._id }}/edit" class="btn btn-success">編輯</a></td>
+              <td class="align-middle ">
                 <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
                   <button type="submit" class="btn btn-danger">刪除</button>
                 </form>
