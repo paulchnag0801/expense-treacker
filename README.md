@@ -2,7 +2,7 @@
 此專案讓使用者可以新增、瀏覽、篩選支出紀錄，同時具備修改及刪除功能
 
 ##### 本專案為練習 Node.js 的 Express 框架及樣板(handlebars)，以及透過 mongoose 操作mongoDB。
-也可透過 heroku 連結使用本專案：https://aqueous-lowlands-09464.herokuapp.com/ 
+也可透過 heroku 連結使用本專案： 
 
 ## 功能
 - 使用者可以瀏覽所有支出清單
