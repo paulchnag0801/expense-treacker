@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Record = require('../../models/Record')
-const Category = require('../../models/Category')
+const Record = require('../../models/record')
+const Category = require('../../models/category')
 //create new record
 router.get('/new', async (req, res) => {
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
