@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Record = require('../../models/record')
-const Category = require('../../models/category')
+const Record = require('../../models/Record')
+const Category = require('../../models/Category')
 //create new record
 router.get('/new', async (req, res) => {
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
       }
       res.render('detail', { record })
     })
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error))
 })
 
 //從主頁修改單筆支出

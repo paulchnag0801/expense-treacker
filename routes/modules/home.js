@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Record = require('../../models/record.js')
-const Category = require('../../models/category.js')
+const Record = require('../../models/Record')
+const Category = require('../../models/Category.js')
 // 設定首頁路由
 
 router.get('/', async (req, res) => {
@@ -28,7 +28,3 @@ router.get('/filter', async (req, res) => {
 })
 
 module.exports = router
-
-
-
-
