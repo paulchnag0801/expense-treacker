@@ -1,40 +1,34 @@
 const express = require('express')
-const { route } = require('..')
 const router = express.Router()
+const Record = require('../../models/record')
+const Category = require('../../models/category')
+// 設定首頁路由
 
-router.get('/', (req, res) => {
-  filteredCategory = ''
+router.get('/', async (req, res) => {
+  const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
+  const records = await Record.find().lean().sort({ date: 'desc', _id: 'desc' })
   let totalAmount = 0
-  Record.find() // 取出 Restaurant model 裡的所有資料
-    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
-    .sort({ name: 'asc' })
-    .then((records) => {
-      for (let i = 0; i < records.length; i++) {
-        totalAmount += Number(records[i].amount)
-        // 將 category 字串轉為 icon 名稱
-        switch (records[i].category) {
-          case 'meals':
-            records[i].category = 'utensils'
-            break
-          case 'traffics':
-            records[i].category = 'shuttle-van'
-            break
-          case 'entertainments':
-            records[i].category = 'grin-beam'
-            break
-          case 'living':
-            records[i].category = 'home'
-            break
-          case 'others':
-            records[i].category = 'pen'
-            break
-        }
-      }
-      res.render('index', { records, totalAmount, filteredCategory })
-    }) // 將資料傳給 index 樣板
-    .catch((error) => console.error(error)) // 錯誤處理
+  for (let record of records) {
+    totalAmount += record.amount
+  }
+  res.render('index', { totalAmount, records, categoryList })
 })
 
-
+router.get('/filter', async (req, res) => {
+  const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
+  const { categorySelector } = req.query
+  const records = await Record.find({ category: categorySelector })
+    .lean()
+    .sort({ _id: 'desc' })
+  let totalAmount = 0
+  for (let record of records) {
+    totalAmount += record.amount
+  }
+  res.render('index', { totalAmount, records, categoryList, categorySelector })
+})
 
 module.exports = router
+
+
+
+
