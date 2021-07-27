@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Record = require('../../models/record')
-const Category = require('../../models/category')
+const Record = require('../../models/Record')
+const Category = require('../../models/Category')
 // 設定首頁路由
 
 router.get('/', async (req, res) => {
