@@ -2,6 +2,7 @@ const express = require('express')
 const session = require('express-session')
 const exphbs = require('express-handlebars')
 const routes = require('./routes')
+const usePassport = require('./config/passport')
 const { ifEqual } = require('./tools/handlebarshelpers')
 const app = express()
 const methodOverride = require('method-override')
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true }))
 // setting static files
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
+usePassport(app)
 app.use(routes)
 
 
