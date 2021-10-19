@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const routes = require('./routes')
 const { ifEqual } = require('./tools/handlebarshelpers')
@@ -15,6 +16,15 @@ require('./config/mongoose')
 
 app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
+
+app.use(
+  session({
+    secret: 'ThisIsMySecret',
+    resave: false,
+    saveUninitialized: true,
+  })
+)
+
 app.use(express.urlencoded({ extended: true }))
 // setting static files
 app.use(express.static('public'))
