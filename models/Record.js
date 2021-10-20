@@ -24,6 +24,13 @@ const recordSchema = new Schema({
     index: true,
     required: true,
   },
+  categoryId: {
+    // 加入關聯設定
+    // type: Schema.Types.ObjectId,
+    // ref: 'Category',
+    // index: true,
+    // required: true,
+  },
 })
 
 
