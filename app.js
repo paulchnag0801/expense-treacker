@@ -6,11 +6,13 @@ const usePassport = require('./config/passport')
 const { ifEqual } = require('./tools/handlebarshelpers')
 const app = express()
 const methodOverride = require('method-override')
+const flash = require('connect-flash')
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: '.hbs',
   helpers: { ifEqual } ,
 })
+
 const PORT = process.env.PORT || 3000
 require('./config/mongoose')
 
@@ -33,9 +35,14 @@ app.use(express.static('public'))
 app.use(methodOverride('_method'))
 usePassport(app)
 
+app.use(flash())
+
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
+  res.locals.error_msg = req.flash('error')
   next()
 })
 
