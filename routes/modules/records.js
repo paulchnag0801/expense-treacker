@@ -9,16 +9,18 @@ router.get('/new', async (req, res) => {
 })
 
 router.post('/', (req, res) => {
+  const userId = req.user._id
   const { name, date, category, amount, shop } = req.body
-  Record.create({ name, date, category, amount, shop })
+  Record.create({ name, date, category, amount, shop, userId })
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })
 
 // 瀏覽特定支出
 router.get('/:id', (req, res) => {
-  const id = req.params.id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  return Record.findOne({ _id, userId })
     .lean()
     .then((record) => {
       switch (record.category) {
@@ -45,18 +47,21 @@ router.get('/:id', (req, res) => {
 
 //從主頁修改單筆支出
 router.get('/:record_id/edit', async (req, res) => {
+  const userId = req.user._id
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
-  const id = req.params.record_id
-  return Record.findById(id)
+  const _id = req.params.record_id
+  return Record.findOne({ _id, userId })
     .lean()
     .then((record) => res.render('edit', { record, categoryList }))
     .catch((error) => console.log(error))
 })
+
 //在修改頁面edit，編輯支出。
 router.put('/:record_id', (req, res) => {
-  const id = req.params.record_id
+  const userId = req.user._id
+  const _id = req.params.record_id
   const { name, date, category, amount, shop } = req.body
-  return Record.findById(id)
+  return Record.findOne({ _id, userId })
     .then((record) => {
       record.name = name
       record.date = date
@@ -71,8 +76,9 @@ router.put('/:record_id', (req, res) => {
 
 // 刪除單筆支出
 router.delete('/:record_id', (req, res) => {
-  const id = req.params.record_id
-  return Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.record_id
+  return Record.findOne({ _id, userId })
     .then((record) => record.remove())
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))

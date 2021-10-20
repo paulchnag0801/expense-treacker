@@ -5,8 +5,11 @@ const Category = require('../../models/Category')
 // 設定首頁路由
 
 router.get('/', async (req, res) => {
+  const userId = req.user._id
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
-  const records = await Record.find().lean().sort({ date: 'desc', _id: 'desc' })
+  const records = await Record.find({ userId })
+    .lean()
+    .sort({ date: 'desc', _id: 'desc' })
   let totalAmount = 0
   for (let record of records) {
     totalAmount += record.amount
