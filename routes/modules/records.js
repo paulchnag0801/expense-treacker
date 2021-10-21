@@ -9,10 +9,10 @@ router.get('/new', async (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  // const categoryId = req.category.id
+  const categoryId = req.category.id
   const userId = req.user._id
   const { name, date, category, amount, shop } = req.body
-  Record.create({ name, date, category, amount, shop, userId,  })
+  Record.create({ name, date, category, amount, shop, userId, categoryId })
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })

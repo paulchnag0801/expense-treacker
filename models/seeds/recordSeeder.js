@@ -1,14 +1,52 @@
 // 載入資料
+const bcrypt = require('bcryptjs')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+const User = require('../user')
 const Record = require('../Record')
 const recordList = require('./record.json')
+const Category = require('../category')
 // 取得資料庫連線狀態
 const db = require('../../config/mongoose')
 
-// 連線成功
+const SEED_USER = {
+  name: 'root',
+  email: 'root@example.com',
+  password: '12345678',
+}
+
 db.once('open', () => {
-  console.log('mongodb connected!')
-  Record.create(recordList).then(() => {
-    console.log('done')
-    db.close()
-  })
+  bcrypt
+    .genSalt(10)
+    .then((salt) => bcrypt.hash(SEED_USER.password, salt))
+    .then((hash) =>
+      User.create({
+        name: SEED_USER.name,
+        email: SEED_USER.email,
+        password: hash,
+      })
+    )
+    .then((user) => {
+      return Promise.all(
+        recordList.map((record) => {
+          const { name, category, date, amount } = record
+          const userId = user._id
+          const categoryId = category._id
+          return Record.create({
+            name,
+            category,
+            date,
+            amount,
+            userId,
+            categoryId,
+          })
+        })
+      )
+    })
+    .then(() => {
+      console.log('recordSeeder done!')
+      process.exit()
+    })
 })
