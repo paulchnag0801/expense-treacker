@@ -32,16 +32,22 @@ db.once('open', () => {
       return Promise.all(
         recordList.map((record) => {
           const { name, category, date, amount } = record
-          const userId = user._id
-          const categoryId = category._id
-          return Record.create({
-            name,
-            category,
-            date,
-            amount,
-            userId,
-            categoryId,
-          })
+          return Category.findOne({ name: category })
+            .lean()
+            .exec()
+            .then((obj) => {
+              // console.log(obj)
+              const categoryId = obj._id
+              const userId = user._id
+              return Record.create({
+                name,
+                category,
+                date,
+                amount,
+                userId,
+                categoryId,
+              })
+            })
         })
       )
     })

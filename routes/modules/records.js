@@ -2,27 +2,38 @@ const express = require('express')
 const router = express.Router()
 const Record = require('../../models/Record')
 const Category = require('../../models/Category')
+
 //create new record
 router.get('/new', async (req, res) => {
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
   res.render('new', { categoryList })
 })
 
-router.post('/', (req, res) => {
-  const categoryId = req.category.id
+router.post('/', async (req, res) => {
   const userId = req.user._id
-  const { name, date, category, amount, shop } = req.body
-  Record.create({ name, date, category, amount, shop, userId, categoryId })
+  const { name, date, category, amount } = req.body
+  const CategoryIcon = await Category.findOne({ name: category })
+    .lean()
+    .exec()
+  const categoryId = CategoryIcon._id
+  const Record = await Record.create({
+    name,
+    date,
+    category,
+    amount,
+    userId,
+    categoryId,
+  })
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
 })
 
 // 瀏覽特定支出
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // const categoryId = req.category.id
   const userId = req.user._id
   const _id = req.params.id
-  return Record.findOne({ _id, userId,  })
+  const Record = await Record.findOne({ _id, userId })
     .lean()
     .then((record) => {
       switch (record.category) {
@@ -53,7 +64,7 @@ router.get('/:record_id/edit', async (req, res) => {
   const userId = req.user._id
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
   const _id = req.params.record_id
-  return Record.findOne({ _id, userId,  })
+  const Record = await Record.findOne({ _id, userId })
     .lean()
     .then((record) => res.render('edit', { record, categoryList }))
     .catch((error) => console.log(error))
@@ -65,7 +76,7 @@ router.put('/:record_id', (req, res) => {
   const userId = req.user._id
   const _id = req.params.record_id
   const { name, date, category, amount, shop } = req.body
-  return Record.findOne({ _id, userId,  })
+  return Record.findOne({ _id, userId })
     .then((record) => {
       record.name = name
       record.date = date
@@ -83,7 +94,7 @@ router.delete('/:record_id', (req, res) => {
   // const categoryId = req.category.id
   const userId = req.user._id
   const _id = req.params.record_id
-  return Record.findOne({ _id, userId,  })
+  return Record.findOne({ _id, userId })
     .then((record) => record.remove())
     .then(() => res.redirect('/'))
     .catch((error) => console.log(error))
