@@ -5,7 +5,10 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
 router.get('/login', (req, res) => {
-  res.render('login')
+  res.render('login', {
+    email: req.session.email,
+    password: req.session.password,
+  })
 })
 
 router.post(
