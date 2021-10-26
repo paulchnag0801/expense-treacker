@@ -5,6 +5,7 @@
 也可透過 heroku 連結使用本專案： 
 
 ## 功能
+- 使用者可以註冊帳號或是用 Facebook Login 直接登入，建立並管理專屬他的一個支出記錄
 - 使用者可以瀏覽所有支出清單
 - 使用者可以根據「類別」來篩選目前瀏覽的支出清單
 - 使用者可以看到目前清單上所有支出的總計金額
@@ -20,6 +21,11 @@
 - mongodb v4.2.14
 - method-override v3.0.0
 
+
+## 預設使用者 Seed User
+>* email: root@example.com
+>* password: 12345678
+
 ### 安裝
 1. 開啟終端機(Terminal)將此專案Clone至本機電腦
 ```
@@ -33,11 +39,13 @@ cd expense-tracker
 ```
 npm install
 ```
-4. 加入種子資料
+4. 設定環境變數檔案，將檔案 .env.example 檔名改為 .env。  
+若要使用 facebook login ，則需要先在 [Facebook for Developers](https://developers.facebook.com/) 中建立應用程式，將應用程式編號和密鑰填入 .env，即可使用 facebook login 功能。
+5. 加入種子資料
 ```
 npm run seed
 ```
-5. 啟動網頁伺服器
+6. 啟動網頁伺服器
 ```
 npm run dev
 ```
@@ -45,4 +53,4 @@ npm run dev
 ```
 APP is listening on localhost:3000
 ```
-6. 在任一瀏覽器中輸入 http://localhost:3000 開始使用本專案
+7. 在任一瀏覽器中輸入 http://localhost:3000 開始使用本專案
