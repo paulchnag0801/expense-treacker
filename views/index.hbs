@@ -5,6 +5,7 @@
       <form action="/filter" method="get">
         <select class="form-control" name="categorySelector" id="categorySelector" onchange="submit()">
           <option selected disabled value="">查看類別開銷</option>
+          <option selected value="" > ALL </option>
           {{#each categoryList}}
           <option value="{{this.name}}" {{#ifEqual this.name ../categorySelector}}selected{{/ifEqual}}>{{this.name}}
           </option>

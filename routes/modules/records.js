@@ -28,7 +28,6 @@ router.post('/', async (req, res) => {
 
 // 瀏覽特定支出
 router.get('/:id', async (req, res) => {
-  // const categoryId = req.category.id
   const userId = req.user._id
   const _id = req.params.id
   await Record.findOne({ _id, userId })
