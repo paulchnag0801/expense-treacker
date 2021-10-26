@@ -55,5 +55,5 @@ db.once('open', () => {
       console.log('recordSeeder done!')
       process.exit()
     })
-    db.close()
+    return db.close()
 })
