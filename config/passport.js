@@ -66,41 +66,41 @@ module.exports = (app) => {
     )
   )
 
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: process.env.GOOGLE_ID,
-        clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK,
-      },
-      async (token, tokenSecret, profile, done) => {
-        const { sub, name, email } = profile._json
-        try {
-          // User's googleId or email must be unique
-          let user = await User.findOne({
-            $or: [{ email }, { googleId: sub }],
-          })
-          if (!user) {
-            const randomPassword = Math.random().toString(36).slice(-8)
+  // passport.use(
+  //   new GoogleStrategy(
+  //     {
+  //       clientID: process.env.GOOGLE_ID,
+  //       clientSecret: process.env.GOOGLE_SECRET,
+  //       callbackURL: process.env.GOOGLE_CALLBACK,
+  //     },
+  //     async (token, tokenSecret, profile, done) => {
+  //       const { sub, name, email } = profile._json
+  //       try {
+  //         // User's googleId or email must be unique
+  //         let user = await User.findOne({
+  //           $or: [{ email }, { googleId: sub }],
+  //         })
+  //         if (!user) {
+  //           const randomPassword = Math.random().toString(36).slice(-8)
 
-            user = await User.create({
-              name,
-              email,
-              password: bcrypt.hashSync(
-                randomPassword,
-                bcrypt.genSaltSync(10),
-                null
-              ),
-              googleId: sub,
-            })
-          }
-          return done(null, user)
-        } catch (err) {
-          done(err)
-        }
-      }
-    )
-  )
+  //           user = await User.create({
+  //             name,
+  //             email,
+  //             password: bcrypt.hashSync(
+  //               randomPassword,
+  //               bcrypt.genSaltSync(10),
+  //               null
+  //             ),
+  //             googleId: sub,
+  //           })
+  //         }
+  //         return done(null, user)
+  //       } catch (err) {
+  //         done(err)
+  //       }
+  //     }
+  //   )
+  // )
 
   passport.serializeUser((user, done) => {
     done(null, user.id)
