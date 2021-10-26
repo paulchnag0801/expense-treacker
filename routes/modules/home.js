@@ -10,6 +10,14 @@ router.get('/', async (req, res) => {
   const records = await Record.find({ userId })
     .lean()
     .sort({ date: 'desc', _id: 'desc' })
+  const categories = await Category.find().lean()
+  records.forEach((record) => {
+    categories.forEach((category) => {
+      if (String(record.categoryId) === String(category._id)) {
+        record.icon = category.icon
+      }
+    })
+  })
   let totalAmount = 0
   for (let record of records) {
     totalAmount += record.amount
@@ -17,6 +25,7 @@ router.get('/', async (req, res) => {
   res.render('index', { totalAmount, records, categoryList })
 })
 
+//篩選路由
 router.get('/filter', async (req, res) => {
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
   const { categorySelector } = req.query

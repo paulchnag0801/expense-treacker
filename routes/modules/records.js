@@ -12,11 +12,9 @@ router.get('/new', async (req, res) => {
 router.post('/', async (req, res) => {
   const userId = req.user._id
   const { name, date, category, amount } = req.body
-  const CategoryIcon = await Category.findOne({ name: category })
-    .lean()
-    .exec()
+  const CategoryIcon = await Category.findOne({ name: category }).lean().exec()
   const categoryId = CategoryIcon._id
-  const Record = await Record.create({
+  await Record.create({
     name,
     date,
     category,
@@ -33,7 +31,7 @@ router.get('/:id', async (req, res) => {
   // const categoryId = req.category.id
   const userId = req.user._id
   const _id = req.params.id
-  const Record = await Record.findOne({ _id, userId })
+  await Record.findOne({ _id, userId })
     .lean()
     .then((record) => {
       switch (record.category) {
@@ -64,7 +62,7 @@ router.get('/:record_id/edit', async (req, res) => {
   const userId = req.user._id
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
   const _id = req.params.record_id
-  const Record = await Record.findOne({ _id, userId })
+  await Record.findOne({ _id, userId })
     .lean()
     .then((record) => res.render('edit', { record, categoryList }))
     .catch((error) => console.log(error))
@@ -91,7 +89,6 @@ router.put('/:record_id', (req, res) => {
 
 // 刪除單筆支出
 router.delete('/:record_id', (req, res) => {
-  // const categoryId = req.category.id
   const userId = req.user._id
   const _id = req.params.record_id
   return Record.findOne({ _id, userId })
