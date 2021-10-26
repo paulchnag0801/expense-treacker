@@ -71,7 +71,7 @@ module.exports = (app) => {
       {
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: process.env.GOOGLE_URI,
+        callbackURL: process.env.GOOGLE_CALLBACK,
       },
       async (token, tokenSecret, profile, done) => {
         const { sub, name, email } = profile._json

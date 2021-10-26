@@ -29,9 +29,12 @@ router.get('/', async (req, res) => {
 router.get('/filter', async (req, res) => {
   const categoryList = await Category.find().sort({ _id: 'asc' }).lean()
   const { categorySelector } = req.query
-  const records = await Record.find({ category: categorySelector })
-    .lean()
-    .sort({ _id: 'desc' })
+  if (categorySelector === 'All') {
+    return res.redirect('/')
+  }
+    const records = await Record.find({ category: categorySelector })
+      .lean()
+      .sort({ _id: 'desc' })
   let totalAmount = 0
   for (let record of records) {
     totalAmount += record.amount
