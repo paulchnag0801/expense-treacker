@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../user')
 const Record = require('../Record')
 const recordList = require('./record.json')
-const Category = require('../category')
+const Category = require('../Category')
 // 取得資料庫連線狀態
 const db = require('../../config/mongoose')
 
