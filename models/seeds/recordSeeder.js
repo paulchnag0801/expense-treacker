@@ -1,9 +1,9 @@
-// 載入資料
-const bcrypt = require('bcryptjs')
-
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+
+// 載入資料
+const bcrypt = require('bcryptjs')
 const User = require('../user')
 const Record = require('../Record')
 const recordList = require('./record.json')
@@ -55,4 +55,5 @@ db.once('open', () => {
       console.log('recordSeeder done!')
       process.exit()
     })
+    .catch((err) => console.log(err))
 })
