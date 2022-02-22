@@ -52,5 +52,5 @@ app.use((req, res, next) => {
 app.use(routes)
 
 app.listen(PORT, () => {
-  console.log(`App is running in http;//localhost:${PORT}`)
+  console.log(`ExpenseTracker is running in http;//localhost:${PORT}`)
 })
