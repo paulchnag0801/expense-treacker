@@ -35,7 +35,7 @@ npm install
 4. 設定環境變數檔案，將檔案 .env.example 檔名改為 .env。  
 若要使用 facebook login ，則需要先在 [Facebook for Developers](https://developers.facebook.com/) 中建立應用程式，將應用程式編號和密鑰填入 .env，即可使用 facebook login 功能。
 
-5. 請在本地MongoDB，資料庫做連線(macOS)：
+5. 請在本地MongoDB資料庫做連線(macOS)：
 ```
   cd ~/mongodb/bin/
 ./mongod --dbpath /Users/[你的使用者名稱]/mongodb-data
